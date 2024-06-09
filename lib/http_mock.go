@@ -14,27 +14,27 @@ type MockClient struct {
 	PatchFunc  func(ctx context.Context, path string, payload interface{}) (*http.Response, error)
 }
 
-func (m *MockClient) Get(ctx context.Context, path string) (*http.Response, error) {
+func (m *MockClient) Get(ctx context.Context, path string,headers ...map[string]string) (*http.Response, error) {
 	return m.GetFunc(ctx, path)
 }
 
-func (m *MockClient) Post(ctx context.Context, path string, payload interface{}) (*http.Response, error) {
+func (m *MockClient) Post(ctx context.Context, path string, payload interface{},headers ...map[string]string) (*http.Response, error) {
 	return m.PostFunc(ctx, path, payload)
 }
 
-func (m *MockClient) Delete(ctx context.Context, path string, payload interface{}) (*http.Response, error) {
+func (m *MockClient) Delete(ctx context.Context, path string, payload interface{},headers ...map[string]string) (*http.Response, error) {
 	return m.DeleteFunc(ctx, path, payload)
 }
 
-func (m *MockClient) Put(ctx context.Context, path string, payload interface{}) (*http.Response, error) {
+func (m *MockClient) Put(ctx context.Context, path string, payload interface{},headers ...map[string]string) (*http.Response, error) {
 	return m.PutFunc(ctx, path, payload)
 }
 
-func (m *MockClient) Patch(ctx context.Context, path string, payload interface{}) (*http.Response, error) {
+func (m *MockClient) Patch(ctx context.Context, path string, payload interface{},headers ...map[string]string) (*http.Response, error) {
 	return m.PatchFunc(ctx, path, payload)
 }
 
-func NewMockClient() (*MockClient) {
+func NewMockClient() *MockClient {
 	return &MockClient{}
 }
 
@@ -44,7 +44,7 @@ func (m *MockClient) SetGetFunc(f func(ctx context.Context, path string) (*http.
 }
 
 // SetPostFunc sets the mock function for Post requests.
-func (m *MockClient) SetPostFunc(f func(ctx context.Context, path string, payload interface{}) (*http.Response, error)) {
+func (m *MockClient) SetPostFunc(f func(ctx context.Context, path string, payload interface{},) (*http.Response, error)) {
 	m.PostFunc = f
 }
 

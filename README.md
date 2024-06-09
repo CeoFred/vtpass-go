@@ -14,7 +14,7 @@ Welcome to the Go Library Starter Kit! This starter kit is designed to help Go d
 To install the Go Library Starter Kit, run:
 
 ```sh
-go get github.com/CeoFred/go_library_starter_kit
+go get github.com/CeoFred/vtupass_go
 ```
 
 ## Usage
@@ -29,11 +29,11 @@ package main
 import (
 	"context"
 	"fmt"
-	"github.com/CeoFred/go_library_starter_kit"
+	"github.com/CeoFred/vtupass_go"
 )
 
 func main() {
-	service := go_library_starter_kit.NewService("your-api-key")
+	service := vtupass_go.NewService("your-api-key")
 
 	// Example usage
 	response, err := service.GetData(context.Background())
@@ -81,7 +81,7 @@ For testing, a mock HTTP client is provided. This allows you to simulate HTTP re
 Example test for `GetData`:
 
 ```go
-package go_library_starter_kit_test
+package vtupass_go_test
 
 import (
 	"context"
@@ -90,15 +90,15 @@ import (
 	"net/http/httptest"
 	"testing"
 
-	"github.com/CeoFred/go_library_starter_kit"
-	"github.com/CeoFred/go_library_starter_kit/lib/httpclient"
+	"github.com/CeoFred/vtupass_go"
+	"github.com/CeoFred/vtupass_go/lib/httpclient"
 	"github.com/stretchr/testify/assert"
 )
 
 func TestGetData(t *testing.T) {
 	// Mock response
-	mockResponse := go_library_starter_kit.BalanceResponse{
-		BaseResponse: go_library_starter_kit.BaseResponse{
+	mockResponse := vtupass_go.BalanceResponse{
+		BaseResponse: vtupass_go.BaseResponse{
 			Code:    "200",
 			Message: "Success",
 		},
@@ -124,7 +124,7 @@ func TestGetData(t *testing.T) {
 	})
 
 	// Initialize service with mock client
-	service := &go_library_starter_kit.Service{
+	service := &vtupass_go.Service{
 		apiKey:          "test-api-key",
 		client:          mockClient,
 		authCredentials: "?access_token=test-api-key",
