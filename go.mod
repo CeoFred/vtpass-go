@@ -1,6 +1,6 @@
 module github.com/CeoFred/vtpass_go
 
-go 1.21.2
+go 1.21
 
 require github.com/stretchr/testify v1.9.0
 
