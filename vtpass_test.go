@@ -7,7 +7,7 @@ import (
 	"net/http/httptest"
 	"testing"
 
-	httpclient "github.com/CeoFred/vtpass_go/lib"
+	httpclient "github.com/CeoFred/vtpass-go/lib"
 
 	"github.com/stretchr/testify/assert"
 )

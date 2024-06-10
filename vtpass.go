@@ -8,7 +8,7 @@ import (
 	"strings"
 	"time"
 
-	httpclient "github.com/CeoFred/vtpass_go/lib"
+	httpclient "github.com/CeoFred/vtpass-go/lib"
 
 	"github.com/google/uuid"
 )

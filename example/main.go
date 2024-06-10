@@ -6,7 +6,7 @@ import (
 	"log"
 	"os"
 
-	vt "github.com/CeoFred/vtpass_go"
+	vt "github.com/CeoFred/vtpass-go"
 
 	"github.com/joho/godotenv"
 )

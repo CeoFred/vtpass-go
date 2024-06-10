@@ -8,7 +8,7 @@ import (
 	"net/http"
 	"time"
 
-	utils "github.com/CeoFred/vtpass_go/utils"
+	utils "github.com/CeoFred/vtpass-go/utils"
 )
 
 var (

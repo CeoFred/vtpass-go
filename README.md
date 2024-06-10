@@ -9,7 +9,7 @@ The VTPass Go library provides an interface to interact with the VTPass API for 
 To install the VTPass Go library, use the following command:
 
 ```sh
-go get github.com/CeoFred/vtpass_go
+go get github.com/CeoFred/vtpass-go
 ```
 
 ## Usage
@@ -23,7 +23,7 @@ import (
     "log"
     "os"
 
-    vt "github.com/CeoFred/vtpass_go"
+    vt "github.com/CeoFred/vtpass-go"
     "github.com/joho/godotenv"
 )
 

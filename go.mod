@@ -1,4 +1,4 @@
-module github.com/CeoFred/vtpass_go
+module github.com/CeoFred/vtpass-go
 
 go 1.21
 
