@@ -8,7 +8,7 @@ import (
 	"net/http"
 	"time"
 
-	utils "github.com/CeoFred/vtupass_go/utils"
+	utils "github.com/CeoFred/vtpass_go/utils"
 )
 
 var (
@@ -40,7 +40,6 @@ func NewAPIClient(baseURL, apiKey string) *APIClient {
 }
 
 // Helper function to convert variadic headers to a map
-
 
 func (c *APIClient) Put(ctx context.Context, endpoint string, payload interface{}, headers ...map[string]string) (*http.Response, error) {
 	url := c.baseURL + endpoint

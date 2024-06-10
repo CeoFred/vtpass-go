@@ -6,7 +6,7 @@ import (
 	"log"
 	"os"
 
-	vt "github.com/CeoFred/vtupass_go"
+	vt "github.com/CeoFred/vtpass_go"
 
 	"github.com/joho/godotenv"
 )
@@ -37,8 +37,76 @@ func main() {
 	fmt.Println("service available ==>", available)
 
 	// Balance()
-	// ServiceCategories()
-	VerifyMeterNumber()
+	PayElectricityPostpaid()
+	PayElectricityPrepaid()
+	QueryTransaction()
+}
+
+func QueryTransaction() {
+	id := service.GenerateRequestID()
+
+	re, err := service.PurchaseElectricity(context.Background(), vt.ElectricityPurchase{
+		RequestID:     id,
+		ServiceID:     "enugu-electric",
+		BillersCode:   "1010101010101",
+		VariationCode: "postpaid",
+		Amount:        1000,
+		Phone:         "08160583193",
+	})
+	if err != nil {
+		fmt.Println(err)
+	}
+
+	txn, err := service.QueryTransaction(context.Background(), re.RequestID)
+	if err != nil {
+		fmt.Println(err)
+	}
+
+	fmt.Println(txn)
+}
+
+func PayElectricityPostpaid() {
+	id := service.GenerateRequestID()
+
+	response, err := service.PurchaseElectricity(context.Background(), vt.ElectricityPurchase{
+		RequestID:     id,
+		ServiceID:     "enugu-electric",
+		BillersCode:   "1010101010101",
+		VariationCode: "postpaid",
+		Amount:        1000,
+		Phone:         "08160583193",
+	})
+	if err != nil {
+		fmt.Println(err)
+	}
+
+	fmt.Println("postpaid purchase \n", response.Content)
+
+}
+
+func PayElectricityPrepaid() {
+	id := service.GenerateRequestID()
+
+	response, err := service.PurchaseElectricity(context.Background(), vt.ElectricityPurchase{
+		RequestID:     id,
+		ServiceID:     "enugu-electric",
+		BillersCode:   "1111111111111",
+		VariationCode: "prepaid",
+		Amount:        1000,
+		Phone:         "8160583193",
+	})
+	if err != nil {
+		fmt.Println(err)
+	}
+
+	fmt.Println("prepaid purchase code \n", response.PurchasedCode)
+
+}
+
+func GenerateRequestID() {
+	requestID := service.GenerateRequestID()
+
+	fmt.Println("Request ID: ", requestID)
 }
 
 func VerifyMeterNumber() {

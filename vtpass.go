@@ -4,11 +4,13 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
-
-	// "fmt"
 	"net/http"
+	"strings"
+	"time"
 
-	httpclient "github.com/CeoFred/vtupass_go/lib"
+	httpclient "github.com/CeoFred/vtpass_go/lib"
+
+	"github.com/google/uuid"
 )
 
 type VTService struct {
@@ -103,7 +105,128 @@ func NewVTService(apiKey, publicKey, secretKey string, environment Environment) 
 	}
 }
 
-//VERIFY METER NUMBER
+type Details struct {
+	AppliedToArrears  float64 `json:"appliedToArrears"`
+	ArrearsBalance    float64 `json:"arrearsBalance"`
+	Wallet            float64 `json:"wallet"`
+	ExchangeReference string  `json:"exchangeReference"`
+	VAT               float64 `json:"vat"`
+	InvoiceNumber     string  `json:"invoiceNumber"`
+	AppliedToWallet   float64 `json:"appliedToWallet"`
+	Units             float64 `json:"units"`
+	ResponseMessage   string  `json:"responseMessage"`
+	Status            string  `json:"status"`
+	ResponseCode      int     `json:"responseCode"`
+	Token             string  `json:"token"`
+}
+
+type TransactionResponse struct {
+	Code    string `json:"code"`
+	Content struct {
+		Details           Details `json:"details"`
+		TransactionNumber string  `json:"transactionNumber"`
+	} `json:"content"`
+}
+
+// QUERY TRANSACTION STATUS
+func (s *VTService) QueryTransaction(ctx context.Context, request_id string) (*TransactionResponse, error) {
+	url := "requery"
+
+	payload := map[string]interface{}{
+		"request_id": request_id,
+	}
+
+	resp, err := s.client.Post(ctx, url, payload, s.authCredentials)
+	if err != nil {
+		return nil, err
+	}
+
+	defer resp.Body.Close()
+	if resp.StatusCode != http.StatusOK {
+		var errorResponse ErrorResponse
+		if err := json.NewDecoder(resp.Body).Decode(&errorResponse); err != nil {
+			return nil, err
+		}
+		return nil, errorResponse
+	}
+
+	var resonse TransactionResponse
+	if err := json.NewDecoder(resp.Body).Decode(&resonse); err != nil {
+		return nil, err
+	}
+
+	if resonse.Code == "011" {
+		return nil, fmt.Errorf("service not valid or invalid argumments")
+	}
+	if resonse.Code == "012" {
+		return nil, fmt.Errorf("prodduct does not exist")
+	}
+
+	return &resonse, nil
+
+}
+
+// PURCHASE PRODUCT (Payment)
+// https://www.vtpass.com/documentation/eedc-enugu-electric-api/
+func (s *VTService) PurchaseElectricity(ctx context.Context, payload ElectricityPurchase) (*PayResponse, error) {
+
+	url := "pay"
+	resp, err := s.client.Post(ctx, url, payload, s.authCredentials)
+	if err != nil {
+		return nil, err
+	}
+
+	defer resp.Body.Close()
+	if resp.StatusCode != http.StatusOK {
+		var errorResponse ErrorResponse
+		if err := json.NewDecoder(resp.Body).Decode(&errorResponse); err != nil {
+			return nil, err
+		}
+
+		return nil, errorResponse
+	}
+
+	var resonse PayResponse
+	if err := json.NewDecoder(resp.Body).Decode(&resonse); err != nil {
+		return nil, err
+	}
+
+	if resonse.Code == "011" {
+		return nil, fmt.Errorf("service not valid or invalid argumments")
+	}
+	if resonse.Code == "012" {
+		return nil, fmt.Errorf("prodduct does not exist")
+	}
+	return &resonse, nil
+
+}
+
+// REQUEST ID
+// https://www.vtpass.com/documentation/how-to-generate-request-id/
+func (s *VTService) GenerateRequestID() string {
+	location, err := time.LoadLocation("Africa/Lagos")
+	if err != nil {
+		// Fallback to local time if the location is not found
+		location = time.Now().Location()
+	}
+
+	// Get the current time in Africa/Lagos
+	currentTime := time.Now().In(location)
+
+	// Format the time to YYYYMMDDHHII
+	timeFormatted := currentTime.Format("200601021504")
+
+	// Generate a UUID
+	uuidPart := uuid.New().String()
+
+	// Concatenate the formatted time and UUID
+	requestID := timeFormatted + "-" + uuidPart
+
+	requestID = strings.ReplaceAll(requestID, "-", "")
+	return requestID
+}
+
+// VERIFY METER NUMBER
 // https://www.vtpass.com/documentation/eedc-enugu-electric-api/
 func (s *VTService) VerifyMeterNumber(ctx context.Context, meter_number, meter_type, service_id string) (*CustomerInfo, error) {
 	url := "merchant-verify"
@@ -133,8 +256,6 @@ func (s *VTService) VerifyMeterNumber(ctx context.Context, meter_number, meter_t
 	if err := json.NewDecoder(resp.Body).Decode(&resonse); err != nil {
 		return nil, err
 	}
-
-	fmt.Println(resonse)
 
 	if resonse.Code == "011" {
 		return nil, fmt.Errorf("service not valid or invalid argumments")

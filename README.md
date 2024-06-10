@@ -1,161 +1,241 @@
-# Go Library Starter Kit
+# VTPass Go Library Documentation
 
-Welcome to the Go Library Starter Kit! This starter kit is designed to help Go developers quickly start writing code to interact with third-party services. It includes a basic structure for service initialization, making HTTP requests, and handling responses. The package also includes a mock HTTP client for easy and effective testing.
+## Overview
 
-## Features
-
-- **Service Initialization**: Easily create service instances with API keys and authentication credentials.
-- **HTTP Client**: Pre-configured HTTP client for making GET, POST, PUT, PATCH, and DELETE requests.
-- **Response Handling**: Structured response handling for JSON data.
-- **Mock Client**: Mock HTTP client for unit testing.
+The VTPass Go library provides an interface to interact with the VTPass API for various services such as querying transaction status, purchasing products (electricity), verifying meter numbers, and fetching service variations and categories.
 
 ## Installation
 
-To install the Go Library Starter Kit, run:
+To install the VTPass Go library, use the following command:
 
 ```sh
-go get github.com/CeoFred/vtupass_go
+go get github.com/CeoFred/vtpass_go
 ```
 
 ## Usage
 
-### Service Initialization
-
-Initialize a new service instance by providing your API key:
+First, initialize the service by providing your API credentials and environment:
 
 ```go
-package main
-
 import (
-	"context"
-	"fmt"
-	"github.com/CeoFred/vtupass_go"
+    "context"
+    "fmt"
+    "log"
+    "os"
+
+    vt "github.com/CeoFred/vtpass_go"
+    "github.com/joho/godotenv"
 )
+
+var apiKey, publicKey, secretKey string
+var service *vt.VTService
+
+func init() {
+    if err := godotenv.Load(".env"); err != nil {
+        log.Fatalf("Error loading .env file: %v", err)
+    }
+
+    apiKey = os.Getenv("API_KEY")
+    publicKey = os.Getenv("PUBLIC_KEY")
+    secretKey = os.Getenv("SECRET_KEY")
+}
 
 func main() {
-	service := vtupass_go.NewService("your-api-key")
+    service = vt.NewVTService(apiKey, publicKey, secretKey, vt.EnvironmentSandbox)
 
-	// Example usage
-	response, err := service.GetData(context.Background())
-	if err != nil {
-		fmt.Println("Error:", err)
-		return
-	}
+    available, err := service.Ping(context.Background())
+    if err != nil {
+        fmt.Println(err)
+    }
+    fmt.Println("service available:", available)
 
-	fmt.Println("Balance:", response.Data.Balance)
+    // Example usage
+    CheckBalance()
+    PurchaseElectricityPrepaid()
+    VerifyMeterNumber()
+}
+
+func CheckBalance() {
+    walletBalance, err := service.Balance(context.Background())
+    if err != nil {
+        fmt.Println(err)
+    }
+    fmt.Printf("wallet balance: %f\n", walletBalance.Contents.Balance)
+}
+
+func PurchaseElectricityPrepaid() {
+    id := service.GenerateRequestID()
+    response, err := service.PurchaseElectricity(context.Background(), vt.ElectricityPurchase{
+        RequestID:    id,
+        ServiceID:    "enugu-electric",
+        BillersCode:  "1111111111111",
+        VariationCode: "prepaid",
+        Amount:       1000,
+        Phone:        "8160583193",
+    })
+    if err != nil {
+        fmt.Println(err)
+    }
+    fmt.Println("prepaid purchase code:", response.PurchasedCode)
+}
+
+func VerifyMeterNumber() {
+    customer, err := service.VerifyMeterNumber(context.Background(), "1111111111111", "prepaid", "enugu-electric")
+    if err != nil {
+        fmt.Println(err)
+    }
+    fmt.Println("Name:", customer.CustomerName)
+    fmt.Println("Business Unit:", customer.BusinessUnit)
+    fmt.Println("Account Number:", customer.AccountNumber)
 }
 ```
 
-### HTTP Client
+## Service Methods
 
-The package provides a pre-configured HTTP client for making various types of HTTP requests. You can use the client directly or through the service methods.
+### `NewVTService(apiKey, publicKey, secretKey string, environment Environment) *VTService`
+Creates a new instance of the VTService with the provided API credentials and environment (sandbox or live).
 
-### Response Handling
+### `Ping(ctx context.Context) (bool, error)`
+Checks the service availability.
 
-Responses are structured to handle JSON data with custom types:
+**Example Usage:**
 
 ```go
-type BalanceResponse struct {
-	BaseResponse
-	Data struct {
-		Balance  string `json:"balance"`
-		Currency string `json:"currency"`
-	} `json:"data"`
+available, err := service.Ping(context.Background())
+if err != nil {
+    fmt.Println(err)
 }
-
-type BaseResponse struct {
-	Code    string `json:"code"`
-	Message string `json:"message"`
-}
-
-type ErrorResponse struct {
-	BaseResponse
-	Error string `json:"error"`
-}
+fmt.Println("service available:", available)
 ```
 
-### Mock Client
+### `Balance(ctx context.Context) (*WalletBalance, error)`
+Fetches the wallet balance.
 
-For testing, a mock HTTP client is provided. This allows you to simulate HTTP responses without making actual network requests.
-
-Example test for `GetData`:
+**Example Usage:**
 
 ```go
-package vtupass_go_test
+walletBalance, err := service.Balance(context.Background())
+if err != nil {
+    fmt.Println(err)
+}
+fmt.Printf("wallet balance: %f\n", walletBalance.Contents.Balance)
+```
 
-import (
-	"context"
-	"encoding/json"
-	"net/http"
-	"net/http/httptest"
-	"testing"
+### `GenerateRequestID() string`
+Generates a unique request ID based on the current time and a UUID.
 
-	"github.com/CeoFred/vtupass_go"
-	"github.com/CeoFred/vtupass_go/lib/httpclient"
-	"github.com/stretchr/testify/assert"
-)
+**Example Usage:**
 
-func TestGetData(t *testing.T) {
-	// Mock response
-	mockResponse := vtupass_go.BalanceResponse{
-		BaseResponse: vtupass_go.BaseResponse{
-			Code:    "200",
-			Message: "Success",
-		},
-		Data: struct {
-			Balance  string `json:"balance"`
-			Currency string `json:"currency"`
-		}{
-			Balance:  "100.00",
-			Currency: "USD",
-		},
-	}
+```go
+requestID := service.GenerateRequestID()
+fmt.Println("Request ID:", requestID)
+```
 
-	// Convert mock response to JSON
-	mockResponseBody, _ := json.Marshal(mockResponse)
+### `QueryTransaction(ctx context.Context, request_id string) (*TransactionResponse, error)`
+Queries the status of a transaction using the request ID.
 
-	// Setup mock client
-	mockClient := httpclient.NewMockClient()
-	mockClient.SetGetFunc(func(ctx context.Context, path string) (*http.Response, error) {
-		rec := httptest.NewRecorder()
-		rec.WriteHeader(http.StatusOK)
-		rec.Write(mockResponseBody)
-		return rec.Result(), nil
-	})
+**Example Usage:**
 
-	// Initialize service with mock client
-	service := &vtupass_go.Service{
-		apiKey:          "test-api-key",
-		client:          mockClient,
-		authCredentials: "?access_token=test-api-key",
-	}
+```go
+txn, err := service.QueryTransaction(context.Background(), "request_id_here")
+if err != nil {
+    fmt.Println(err)
+}
+fmt.Println("Transaction:", txn)
+```
 
-	// Call GetData
-	resp, err := service.GetData(context.Background())
+### `PurchaseElectricity(ctx context.Context, payload ElectricityPurchase) (*PayResponse, error)`
+Purchases electricity by providing the necessary details.
 
-	// Assertions
-	assert.NoError(t, err)
-	assert.NotNil(t, resp)
-	assert.Equal(t, "100.00", resp.Data.Balance)
+**Example Usage:**
+
+```go
+id := service.GenerateRequestID()
+response, err := service.PurchaseElectricity(context.Background(), vt.ElectricityPurchase{
+    RequestID:    id,
+    ServiceID:    "enugu-electric",
+    BillersCode:  "1111111111111",
+    VariationCode: "prepaid",
+    Amount:       1000,
+    Phone:        "8160583193",
+})
+if err != nil {
+    fmt.Println(err)
+}
+fmt.Println("prepaid purchase code:", response.PurchasedCode)
+```
+
+### `VerifyMeterNumber(ctx context.Context, meter_number, meter_type, service_id string) (*CustomerInfo, error)`
+Verifies a meter number.
+
+**Example Usage:**
+
+```go
+customer, err := service.VerifyMeterNumber(context.Background(), "1111111111111", "prepaid", "enugu-electric")
+if err != nil {
+    fmt.Println(err)
+}
+fmt.Println("Name:", customer.CustomerName)
+fmt.Println("Business Unit:", customer.BusinessUnit)
+fmt.Println("Account Number:", customer.AccountNumber)
+```
+
+### `ServiceVariations(ctx context.Context, id string) ([]Variation, error)`
+Fetches the service variations for a given service ID.
+
+**Example Usage:**
+
+```go
+services, err := service.ServiceVariations(context.Background(), "enugu-electric")
+if err != nil {
+    fmt.Println(err)
+}
+for _, service := range services {
+    fmt.Printf("Service: %s, Min Amount: %s\n", service.Name, service.VariationCode)
 }
 ```
 
-## Contributing
+### `ServiceByIdentifier(ctx context.Context, id string) ([]Service, error)`
+Fetches services by their identifier.
 
-Contributions are welcome! Please fork the repository and create a pull request with your changes.
+**Example Usage:**
 
-## License
+```go
+services, err := service.ServiceByIdentifier(context.Background(), vt.IdentifierElectricityBill)
+if err != nil {
+    fmt.Println(err)
+}
+for _, service := range services {
+    fmt.Printf("Service: %s, Min Amount: %s\n", service.Name, service.MaximumAmount)
+}
+```
 
-This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
+### `ServiceCategories(ctx context.Context) ([]ServiceCategory, error)`
+Fetches all service categories.
 
-## Authors
+**Example Usage:**
 
-- CeoFred
+```go
+services, err := service.ServiceCategories(context.Background())
+if err != nil {
+    fmt.Println(err)
+}
+for _, service := range services {
+    fmt.Println("Service:", service.Name)
+}
+```
 
-## Acknowledgements
+## Error Handling
 
-- Thanks to the God almighty.
+All service methods return an error as the second return value. Check this error to handle any issues that arise during the API call.
 
----
+**Example Usage:**
 
-Happy coding!# go-library-starter-kit
+```go
+available, err := service.Ping(context.Background())
+if err != nil {
+    fmt.Println("Error:", err)
+} else {
+    fmt.Println("Service available:", available)
+}
+```

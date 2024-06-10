@@ -7,7 +7,7 @@ import (
 	"net/http/httptest"
 	"testing"
 
-	"github.com/CeoFred/vtupass_go/lib"
+	httpclient "github.com/CeoFred/vtpass_go/lib"
 
 	"github.com/stretchr/testify/assert"
 )
@@ -16,7 +16,7 @@ func TestPing(t *testing.T) {
 	// Mock response
 	mockResponse := WalletBalance{
 		BaseResponse: BaseResponse{
-			Code:    "020",
+			Code: "020",
 		},
 	}
 
@@ -35,8 +35,8 @@ func TestPing(t *testing.T) {
 
 	// Initialize service with mock client
 	service := &VTService{
-		apiKey:          "test-api-key",
-		client:          mockClient,
+		apiKey: "test-api-key",
+		client: mockClient,
 		authCredentials: map[string]string{
 			"api-key": "test-api-key",
 		},
