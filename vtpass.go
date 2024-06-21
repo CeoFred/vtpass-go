@@ -4,6 +4,7 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"log"
 	"net/http"
 	"strings"
 	"time"
@@ -239,6 +240,7 @@ func (s *VTService) VerifyMeterNumber(ctx context.Context, meter_number, meter_t
 
 	resp, err := s.client.Post(ctx, url, requestData, s.authCredentials)
 	if err != nil {
+		log.Printf("request failed: %v", err)
 		return nil, err
 	}
 	defer resp.Body.Close()
@@ -246,12 +248,14 @@ func (s *VTService) VerifyMeterNumber(ctx context.Context, meter_number, meter_t
 	if resp.StatusCode != http.StatusOK {
 		var errorResponse ErrorResponse
 		if err := json.NewDecoder(resp.Body).Decode(&errorResponse); err != nil {
-				return nil,errorResponse 
+			log.Printf("decoding error response failed: %v", err)
+			return nil, errorResponse
 		}
 	}
 
 	var resonse CustomerInfoResponse
 	if err := json.NewDecoder(resp.Body).Decode(&resonse); err != nil {
+		log.Printf("decoding body failed: %v", err)
 		return nil, err
 	}
 
