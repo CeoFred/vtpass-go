@@ -248,18 +248,6 @@ func (s *VTService) VerifyMeterNumber(ctx context.Context, meter_number, meter_t
 
 	if resp.StatusCode != http.StatusOK {
 		var errorResponse ErrorResponse
-		bodyBytes, err := io.ReadAll(resp.Body)
-    if err != nil {
-        fmt.Println("Error reading response body:", err)
-        return nil,err
-    }
-
-    // Convert the body to a string
-    bodyString := string(bodyBytes)
-
-    // Print the body string
-    fmt.Println(bodyString)
-		fmt.Println(resp.StatusCode,resp.Status,)
 		if err := json.NewDecoder(resp.Body).Decode(&errorResponse); err != nil {
 			log.Printf("decoding error response failed: %v", err)
 			return nil, errorResponse
@@ -267,6 +255,19 @@ func (s *VTService) VerifyMeterNumber(ctx context.Context, meter_number, meter_t
 	}
 
 	var resonse CustomerInfoResponse
+	bodyBytes, err := io.ReadAll(resp.Body)
+	if err != nil {
+		fmt.Println("Error reading response body:", err)
+		return nil, err
+	}
+
+	// Convert the body to a string
+	bodyString := string(bodyBytes)
+
+	// Print the body string
+	fmt.Println(bodyString)
+	fmt.Println(resp.StatusCode, resp.Status)
+
 	if err := json.NewDecoder(resp.Body).Decode(&resonse); err != nil {
 		log.Printf("decoding body failed: %v", err)
 		return nil, err
