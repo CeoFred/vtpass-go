@@ -36,10 +36,10 @@ func main() {
 
 	fmt.Println("service available ==>", available)
 
-	// Balance()
-	PayElectricityPostpaid()
-	PayElectricityPrepaid()
-	QueryTransaction()
+	VerifyMeterNumber()
+	// PayElectricityPostpaid()
+	// PayElectricityPrepaid()
+	// QueryTransaction()
 }
 
 func QueryTransaction() {
@@ -113,6 +113,7 @@ func VerifyMeterNumber() {
 	customer, err := service.VerifyMeterNumber(context.Background(), "1111111111111", "prepaid", "enugu-electric")
 	if err != nil {
 		fmt.Println(err)
+		return
 	}
 
 	fmt.Println("Name: ", customer.CustomerName)

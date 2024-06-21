@@ -246,10 +246,8 @@ func (s *VTService) VerifyMeterNumber(ctx context.Context, meter_number, meter_t
 	if resp.StatusCode != http.StatusOK {
 		var errorResponse ErrorResponse
 		if err := json.NewDecoder(resp.Body).Decode(&errorResponse); err != nil {
-			return nil, err
+				return nil,errorResponse 
 		}
-
-		return nil, errorResponse
 	}
 
 	var resonse CustomerInfoResponse
