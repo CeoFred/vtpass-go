@@ -36,6 +36,7 @@ type CustomerInfo struct {
 	BusinessUnit    string `json:"Business_Unit"`
 	Address         string `json:"Address"`
 	CustomerArrears string `json:"Customer_Arrears"`
+	District        string `json:"District"`
 }
 
 type ElectricityPurchase struct {
@@ -99,6 +100,6 @@ type PayResponse struct {
 	BonusTokenAmount      *float64        `json:"bonusTokenAmount"`
 	TariffIndex           string          `json:"tariffIndex"`
 	DebtDescription       string          `json:"debtDescription"`
-	ExchangeReference string `json:"exchangeReference"`
-	UtilityName string `json:"utilityName"`
+	ExchangeReference     string          `json:"exchangeReference"`
+	UtilityName           string          `json:"utilityName"`
 }
