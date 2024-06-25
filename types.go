@@ -37,6 +37,10 @@ type CustomerInfo struct {
 	Address         string `json:"Address"`
 	CustomerArrears string `json:"Customer_Arrears"`
 	District        string `json:"District"`
+	LastPurchaseDays string `json:"Last_Purchase_Days"`
+	MAXPurchaseAmount string `json:"Max_Purchase_Amount"`
+	MinPurchaseAmount string `json:"Min_Purchase_Amount"`
+	CustomerPhone   string `json:"Customer_Phone"`
 }
 
 type ElectricityPurchase struct {

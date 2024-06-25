@@ -36,7 +36,7 @@ func main() {
 
 	fmt.Println("service available ==>", available)
 
-	VerifyMeterNumber()
+	ServiceVariations()
 	// PayElectricityPostpaid()
 	// PayElectricityPrepaid()
 	// QueryTransaction()
@@ -129,7 +129,7 @@ func ServiceVariations() {
 	}
 
 	for i := 0; i < len(services); i++ {
-		fmt.Printf("Service: %s, Min Amount: %s \n", services[i].Name, services[i].VariationCode)
+		fmt.Printf("Code: %s, Min Amount: %s , Variation amount: %s \n", services[i].VariationCode, services[i].FixedPrice, services[i].VariationAmount)
 	}
 }
 
