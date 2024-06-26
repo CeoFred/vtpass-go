@@ -73,7 +73,7 @@ func PayElectricityPostpaid() {
 		ServiceID:     "enugu-electric",
 		BillersCode:   "1010101010101",
 		VariationCode: "postpaid",
-		Amount:        1000.3,
+		Amount:        970.23,
 		Phone:         "08160583193",
 	})
 	if err != nil {
@@ -92,7 +92,7 @@ func PayElectricityPrepaid() {
 		ServiceID:     "enugu-electric",
 		BillersCode:   "1111111111111",
 		VariationCode: "prepaid",
-		Amount:        1000.3,
+		Amount:        1001,
 		Phone:         "8160583193",
 	})
 	if err != nil {

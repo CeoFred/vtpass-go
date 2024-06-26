@@ -53,8 +53,8 @@ type ElectricityPurchase struct {
 }
 
 type Transaction struct {
-	Amount              int     `json:"amount"`
-	ConvenienceFee      int     `json:"convenience_fee"`
+	Amount              float64     `json:"amount"`
+	ConvenienceFee      float64     `json:"convenience_fee"`
 	Status              string  `json:"status"`
 	Name                *string `json:"name"`
 	Phone               string  `json:"phone"`
@@ -63,13 +63,13 @@ type Transaction struct {
 	CreatedAt           string  `json:"created_at"`
 	Discount            *string `json:"discount"`
 	GiftcardID          *string `json:"giftcard_id"`
-	TotalAmount         int     `json:"total_amount"`
-	Commission          int     `json:"commission"`
+	TotalAmount         float64     `json:"total_amount"`
+	Commission          float64     `json:"commission"`
 	Channel             string  `json:"channel"`
 	Platform            string  `json:"platform"`
 	ServiceVerification *string `json:"service_verification"`
-	Quantity            int     `json:"quantity"`
-	UnitPrice           int     `json:"unit_price"`
+	Quantity            float64     `json:"quantity"`
+	UnitPrice           float64     `json:"unit_price"`
 	UniqueElement       string  `json:"unique_element"`
 	ProductName         string  `json:"product_name"`
 }
