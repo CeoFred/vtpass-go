@@ -36,8 +36,8 @@ func main() {
 
 	fmt.Println("service available ==>", available)
 
-	ServiceVariations()
-	// PayElectricityPostpaid()
+	// ServiceVariations()
+	PayElectricityPostpaid()
 	// PayElectricityPrepaid()
 	// QueryTransaction()
 }
@@ -73,7 +73,7 @@ func PayElectricityPostpaid() {
 		ServiceID:     "enugu-electric",
 		BillersCode:   "1010101010101",
 		VariationCode: "postpaid",
-		Amount:        1000,
+		Amount:        1000.3,
 		Phone:         "08160583193",
 	})
 	if err != nil {
@@ -92,7 +92,7 @@ func PayElectricityPrepaid() {
 		ServiceID:     "enugu-electric",
 		BillersCode:   "1111111111111",
 		VariationCode: "prepaid",
-		Amount:        1000,
+		Amount:        1000.3,
 		Phone:         "8160583193",
 	})
 	if err != nil {
