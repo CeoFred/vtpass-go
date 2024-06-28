@@ -163,6 +163,6 @@ func ServiceByIdentifier() {
 	}
 
 	for i := 0; i < len(services); i++ {
-		fmt.Printf("Service: %s, Min Amount: %s \n", services[i].Name, services[i].MaximumAmount)
+		fmt.Printf("Service: %s, Min Amount: %d \n", services[i].Name, services[i].MaximumAmount)
 	}
 }
