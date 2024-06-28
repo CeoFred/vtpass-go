@@ -16,7 +16,7 @@ type Service struct {
 	ServiceID      string `json:"serviceID"`
 	Name           string `json:"name"`
 	MinimumAmount  string `json:"minimum_amount"`
-	MaximumAmount  string `json:"maximum_amount"`
+	MaximumAmount  uint   `json:"maximum_amount"`
 	ConvenienceFee string `json:"convenience_fee"`
 	ProductType    string `json:"product_type"`
 	Image          string `json:"image"`
@@ -30,17 +30,17 @@ type Variation struct {
 }
 
 type CustomerInfo struct {
-	CustomerName    string `json:"Customer_Name"`
-	AccountNumber   string `json:"Account_Number"`
-	MeterNumber     string `json:"Meter_Number"`
-	BusinessUnit    string `json:"Business_Unit"`
-	Address         string `json:"Address"`
-	CustomerArrears string `json:"Customer_Arrears"`
-	District        string `json:"District"`
+	CustomerName     string `json:"Customer_Name"`
+	AccountNumber    string `json:"Account_Number"`
+	MeterNumber      string `json:"Meter_Number"`
+	BusinessUnit     string `json:"Business_Unit"`
+	Address          string `json:"Address"`
+	CustomerArrears  string `json:"Customer_Arrears"`
+	District         string `json:"District"`
 	LastPurchaseDays string `json:"Last_Purchase_Days"`
-	MAXPurchaseAmount string `json:"Max_Purchase_Amount"`
-	MinPurchaseAmount string `json:"Min_Purchase_Amount"`
-	CustomerPhone   string `json:"Customer_Phone"`
+	// MAXPurchaseAmount string `json:"Max_Purchase_Amount"`
+	// MinPurchaseAmount string `json:"Min_Purchase_Amount"`
+	CustomerPhone string `json:"Customer_Phone"`
 }
 
 type ElectricityPurchase struct {
@@ -53,8 +53,8 @@ type ElectricityPurchase struct {
 }
 
 type Transaction struct {
-	Amount              float64     `json:"amount"`
-	ConvenienceFee      float64     `json:"convenience_fee"`
+	Amount              float64 `json:"amount"`
+	ConvenienceFee      float64 `json:"convenience_fee"`
 	Status              string  `json:"status"`
 	Name                *string `json:"name"`
 	Phone               string  `json:"phone"`
@@ -63,13 +63,13 @@ type Transaction struct {
 	CreatedAt           string  `json:"created_at"`
 	Discount            *string `json:"discount"`
 	GiftcardID          *string `json:"giftcard_id"`
-	TotalAmount         float64     `json:"total_amount"`
-	Commission          float64     `json:"commission"`
+	TotalAmount         float64 `json:"total_amount"`
+	Commission          float64 `json:"commission"`
 	Channel             string  `json:"channel"`
 	Platform            string  `json:"platform"`
 	ServiceVerification *string `json:"service_verification"`
-	Quantity            float64     `json:"quantity"`
-	UnitPrice           float64     `json:"unit_price"`
+	Quantity            float64 `json:"quantity"`
+	UnitPrice           float64 `json:"unit_price"`
 	UniqueElement       string  `json:"unique_element"`
 	ProductName         string  `json:"product_name"`
 }

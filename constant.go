@@ -5,10 +5,10 @@ const LiveEnviromentURL = "https://api-service.vtpass.com/api/"
 
 
 // response codes
-const BILLER_CONFIRMED = "020"
-const INVALID_ARGUMENTS = "011"
-const PRODUCT_DOES_NOT_EXIST = "012"
-const BILLER_NOT_REACHABLE_AT_THIS_POINT = "030"
+const BILLER_CONFIRMED = 020
+const INVALID_ARGUMENTS = 011
+const PRODUCT_DOES_NOT_EXIST = 012
+const BILLER_NOT_REACHABLE_AT_THIS_POINT = 030
 
 
 const (

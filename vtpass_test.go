@@ -16,7 +16,7 @@ func TestPing(t *testing.T) {
 	// Mock response
 	mockResponse := WalletBalance{
 		BaseResponse: BaseResponse{
-			Code: "020",
+			Code: 020,
 		},
 	}
 
