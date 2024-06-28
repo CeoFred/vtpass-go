@@ -11,7 +11,7 @@ import (
 	"github.com/joho/godotenv"
 )
 
-var apiKey, publicKey, secretKey string
+var apiKey, publicKey, secretKey,env string
 var service *vt.VTService
 
 func init() {
@@ -22,12 +22,13 @@ func init() {
 	apiKey = os.Getenv("API_KEY")
 	publicKey = os.Getenv("PUBLIC_KEY")
 	secretKey = os.Getenv("SECRET_KEY")
+	env = os.Getenv("ENVIRONMENT")
 
 }
 
 func main() {
 
-	service = vt.NewVTService(apiKey, publicKey, secretKey, vt.EnvironmentSandbox)
+	service = vt.NewVTService(apiKey, publicKey, secretKey, vt.Environment(env))
 	available, err := service.Ping(context.Background())
 
 	if err != nil {
@@ -36,33 +37,33 @@ func main() {
 
 	fmt.Println("service available ==>", available)
 
-	// ServiceVariations()
-	PayElectricityPostpaid()
+	Balance()
+	// ServiceByIdentifier()
 	// PayElectricityPrepaid()
-	// QueryTransaction()
+	QueryTransaction()
 }
 
 func QueryTransaction() {
-	id := service.GenerateRequestID()
+	// id := service.GenerateRequestID()
 
-	re, err := service.PurchaseElectricity(context.Background(), vt.ElectricityPurchase{
-		RequestID:     id,
-		ServiceID:     "enugu-electric",
-		BillersCode:   "1010101010101",
-		VariationCode: "postpaid",
-		Amount:        1000,
-		Phone:         "08160583193",
-	})
+	// re, err := service.PurchaseElectricity(context.Background(), vt.ElectricityPurchase{
+	// 	RequestID:     id,
+	// 	ServiceID:     "enugu-electric",
+	// 	BillersCode:   "1010101010101",
+	// 	VariationCode: "postpaid",
+	// 	Amount:        1000,
+	// 	Phone:         "08160583193",
+	// })
+	// if err != nil {
+	// 	fmt.Println(err)
+	// }
+
+	txn, err := service.QueryTransaction(context.Background(), "2024062820289f3d2ce822bf4823b290949652c637c4")
 	if err != nil {
-		fmt.Println(err)
+		panic(err)
 	}
 
-	txn, err := service.QueryTransaction(context.Background(), re.RequestID)
-	if err != nil {
-		fmt.Println(err)
-	}
-
-	fmt.Println(txn)
+	fmt.Println(txn.Content)
 }
 
 func PayElectricityPostpaid() {
@@ -73,7 +74,7 @@ func PayElectricityPostpaid() {
 		ServiceID:     "enugu-electric",
 		BillersCode:   "1010101010101",
 		VariationCode: "postpaid",
-		Amount:        970.23,
+		Amount:        70.23,
 		Phone:         "08160583193",
 	})
 	if err != nil {
@@ -89,14 +90,14 @@ func PayElectricityPrepaid() {
 
 	response, err := service.PurchaseElectricity(context.Background(), vt.ElectricityPurchase{
 		RequestID:     id,
-		ServiceID:     "enugu-electric",
-		BillersCode:   "1111111111111",
+		ServiceID:     "portharcourt-electric",
+		BillersCode:   "0137200395333",
 		VariationCode: "prepaid",
-		Amount:        1001,
+		Amount:        1000,
 		Phone:         "8160583193",
 	})
 	if err != nil {
-		fmt.Println(err)
+		panic(err)
 	}
 
 	fmt.Println("prepaid purchase code \n", response.PurchasedCode)
@@ -110,13 +111,13 @@ func GenerateRequestID() {
 }
 
 func VerifyMeterNumber() {
-	customer, err := service.VerifyMeterNumber(context.Background(), "1111111111111", "prepaid", "enugu-electric")
+	customer, err := service.VerifyMeterNumber(context.Background(), "0137200395333", "prepaid", "portharcourt-electric")
 	if err != nil {
 		fmt.Println(err)
 		return
 	}
 
-	fmt.Println("Name: ", customer.CustomerName)
+	fmt.Println("Customer: ", customer)
 	fmt.Println("Business Unit: ", customer.BusinessUnit)
 	fmt.Println("Account_Number: ", customer.AccountNumber)
 
@@ -139,7 +140,9 @@ func Balance() {
 		fmt.Println(err)
 	}
 
-	fmt.Printf("wallet balance: %f\n", walletBalance.Contents.Balance)
+	if walletBalance != nil {
+	fmt.Printf("wallet balance: %s\n", walletBalance.Contents.Balance)
+	}
 }
 
 func ServiceCategories() {
