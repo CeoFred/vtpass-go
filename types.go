@@ -31,13 +31,16 @@ type Variation struct {
 
 type CustomerInfo struct {
 	CustomerName     string `json:"Customer_Name"`
+	CustomerNumber   string `json:"Customer_Number"`
 	AccountNumber    string `json:"Account_Number"`
-	MeterNumber      string `json:"Meter_Number"`
+	MeterNumber      string `json:"MeterNumber"`
 	BusinessUnit     string `json:"Business_Unit"`
 	Address          string `json:"Address"`
 	CustomerArrears  string `json:"Customer_Arrears"`
 	District         string `json:"District"`
 	LastPurchaseDays string `json:"Last_Purchase_Days"`
+	KCT1             string `json:"KCT1"`
+	KCT2             string `json:"KCT2"`
 	// MAXPurchaseAmount string `json:"Max_Purchase_Amount"`
 	// MinPurchaseAmount string `json:"Min_Purchase_Amount"`
 	CustomerPhone string `json:"Customer_Phone"`
