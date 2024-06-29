@@ -14,7 +14,7 @@ import (
 var (
 	// defaultClient is the default HTTP client for the package.
 	defaultClient = &http.Client{
-		Timeout: time.Duration(35) * time.Second,
+		Timeout: time.Duration(32225) * time.Second,
 		Transport: &http.Transport{
 			MaxIdleConns:        10,
 			MaxIdleConnsPerHost: 100,
