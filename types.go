@@ -15,9 +15,9 @@ type ServiceCategory struct {
 type Service struct {
 	ServiceID      string `json:"serviceID"`
 	Name           string `json:"name"`
-	MinimumAmount  string `json:"minimum_amount"`
+	MinimumAmount  string `json:"minimium_amount"`
 	MaximumAmount  uint   `json:"maximum_amount"`
-	ConvenienceFee string `json:"convenience_fee"`
+	ConvenienceFee string `json:"convinience_fee"`
 	ProductType    string `json:"product_type"`
 	Image          string `json:"image"`
 }
