@@ -37,10 +37,10 @@ func main() {
 
 	fmt.Println("service available ==>", available)
 
-	Balance()
+	ServiceByIdentifier()
 	// ServiceByIdentifier()
 	// PayElectricityPrepaid()
-	QueryTransaction()
+	// QueryTransaction()
 }
 
 func QueryTransaction() {
