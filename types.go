@@ -55,6 +55,20 @@ type ElectricityPurchase struct {
 	Phone         string  `json:"phone"`
 }
 
+type Data struct {
+	Code                string  `json:"code"`
+	Content             Content `json:"content"`
+	ResponseDescription string  `json:"response_description"`
+	Amount              float64 `json:"amount"`
+	TransactionDate     *string `json:"transaction_date"`
+	RequestID           string  `json:"requestId"`
+	PurchasedCode       string  `json:"purchased_code"`
+}
+
+type TransactionUpdate struct {
+	Type string `json:"type"`
+	Data Data   `json:"data"`
+}
 type Transaction struct {
 	Amount              float64 `json:"amount"`
 	ConvenienceFee      float64 `json:"convenience_fee"`
@@ -75,6 +89,8 @@ type Transaction struct {
 	UnitPrice           float64 `json:"unit_price"`
 	UniqueElement       string  `json:"unique_element"`
 	ProductName         string  `json:"product_name"`
+	TransactionID       string  `json:"transactionId"`
+	WalletCreditID      string  `json:"wallet_credit_id"`
 }
 
 type Content struct {
