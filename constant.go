@@ -1,7 +1,7 @@
 package vtupass_go
 
 const SandboxBaseURL = "https://sandbox.vtpass.com/api/"
-const LiveEnviromentURL = "https://api-service.vtpass.com/api/"
+const LiveEnviromentURL = "https://vtpass.com/api/"
 
 
 // response codes
