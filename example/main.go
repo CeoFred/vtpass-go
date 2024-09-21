@@ -11,7 +11,7 @@ import (
 	"github.com/joho/godotenv"
 )
 
-var apiKey, publicKey, secretKey,env string
+var apiKey, publicKey, secretKey, env string
 var service *vt.VTService
 
 func init() {
@@ -37,9 +37,9 @@ func main() {
 
 	fmt.Println("service available ==>", available)
 
-	ServiceByIdentifier()
 	// ServiceByIdentifier()
-	// PayElectricityPrepaid()
+	// ServiceByIdentifier()
+	PayElectricityPrepaid()
 	// QueryTransaction()
 }
 
@@ -91,7 +91,7 @@ func PayElectricityPrepaid() {
 	response, err := service.PurchaseElectricity(context.Background(), vt.ElectricityPurchase{
 		RequestID:     id,
 		ServiceID:     "portharcourt-electric",
-		BillersCode:   "0137200395333",
+		BillersCode:   "1111111111111",
 		VariationCode: "prepaid",
 		Amount:        1000,
 		Phone:         "8160583193",
@@ -101,6 +101,7 @@ func PayElectricityPrepaid() {
 	}
 
 	fmt.Println("prepaid purchase code \n", response.PurchasedCode)
+	fmt.Println(response.Content.Transactions.UnitPrice)
 
 }
 
@@ -141,7 +142,7 @@ func Balance() {
 	}
 
 	if walletBalance != nil {
-	fmt.Printf("wallet balance: %s\n", walletBalance.Contents.Balance)
+		fmt.Printf("wallet balance: %s\n", walletBalance.Contents.Balance)
 	}
 }
 

@@ -77,7 +77,7 @@ type VariationResponse struct {
 }
 
 type CustomerInfoResponse struct {
-	Code string `json:"code"`
+	Code    string       `json:"code"`
 	Content CustomerInfo `json:"content"`
 }
 
@@ -330,7 +330,7 @@ func (s *VTService) ServiceByIdentifier(ctx context.Context, id string) ([]Servi
 	if err := json.NewDecoder(resp.Body).Decode(&resonse); err != nil {
 		return nil, err
 	}
-	if resonse.Code == 010  {
+	if resonse.Code == 010 {
 		return nil, fmt.Errorf("service not valid or invalid argumments")
 	}
 
@@ -383,7 +383,7 @@ func (s *VTService) Ping(ctx context.Context) (bool, error) {
 
 func (s *VTService) Balance(ctx context.Context) (*WalletBalance, error) {
 
-		// fmt.Println(s.authCredentials)
+	// fmt.Println(s.authCredentials)
 	resp, err := s.client.Get(ctx, "balance", s.authCredentials)
 	if err != nil {
 		return nil, err
@@ -391,11 +391,10 @@ func (s *VTService) Balance(ctx context.Context) (*WalletBalance, error) {
 
 	defer resp.Body.Close()
 
-
 	if resp.StatusCode != http.StatusOK {
 		var errorResponse ErrorResponse
 		if err := json.NewDecoder(resp.Body).Decode(&errorResponse); err != nil {
-		return nil, errorResponse
+			return nil, errorResponse
 		}
 	}
 

@@ -70,27 +70,27 @@ type TransactionUpdate struct {
 	Data Data   `json:"data"`
 }
 type Transaction struct {
-	Amount              float64 `json:"amount"`
-	ConvenienceFee      float64 `json:"convenience_fee"`
-	Status              string  `json:"status"`
-	Name                *string `json:"name"`
-	Phone               string  `json:"phone"`
-	Email               string  `json:"email"`
-	Type                string  `json:"type"`
-	CreatedAt           string  `json:"created_at"`
-	Discount            *string `json:"discount"`
-	GiftcardID          *string `json:"giftcard_id"`
-	TotalAmount         float64 `json:"total_amount"`
-	Commission          float64 `json:"commission"`
-	Channel             string  `json:"channel"`
-	Platform            string  `json:"platform"`
-	ServiceVerification *string `json:"service_verification"`
-	Quantity            float64 `json:"quantity"`
-	UnitPrice           float64 `json:"unit_price"`
-	UniqueElement       string  `json:"unique_element"`
-	ProductName         string  `json:"product_name"`
-	TransactionID       string  `json:"transactionId"`
-	WalletCreditID      string  `json:"wallet_credit_id"`
+	Amount              float64     `json:"amount"`
+	ConvenienceFee      float64     `json:"convenience_fee"`
+	Status              string      `json:"status"`
+	Name                *string     `json:"name"`
+	Phone               string      `json:"phone"`
+	Email               string      `json:"email"`
+	Type                string      `json:"type"`
+	CreatedAt           string      `json:"created_at"`
+	Discount            *string     `json:"discount"`
+	GiftcardID          *string     `json:"giftcard_id"`
+	TotalAmount         float64     `json:"total_amount"`
+	Commission          float64     `json:"commission"`
+	Channel             string      `json:"channel"`
+	Platform            string      `json:"platform"`
+	ServiceVerification *string     `json:"service_verification"`
+	Quantity            float64     `json:"quantity"`
+	UnitPrice           interface{} `json:"unit_price"`
+	UniqueElement       string      `json:"unique_element"`
+	ProductName         string      `json:"product_name"`
+	TransactionID       string      `json:"transactionId"`
+	WalletCreditID      string      `json:"wallet_credit_id"`
 }
 
 type Content struct {
