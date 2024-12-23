@@ -121,13 +121,17 @@ type Details struct {
 	ResponseCode      int     `json:"responseCode"`
 	Token             string  `json:"token"`
 }
-
+type TransactionContent struct {
+	Transactions Transaction `json:"transactions"`
+}
 type TransactionResponse struct {
 	Code    string `json:"code"`
-	Content struct {
-		Details           Details `json:"details"`
-		TransactionNumber string  `json:"transactionNumber"`
-	} `json:"content"`
+	ResponseDescription string `json:"response_description"`
+	Content             TransactionContent `json:"content"`
+	RequestID           string           `json:"requestId"`
+	Amount              string           `json:"amount"`
+	TransactionDate     TransactionDate  `json:"transaction_date"`
+	PurchasedCode       string           `json:"purchased_code"`
 }
 
 // QUERY TRANSACTION STATUS
@@ -164,6 +168,8 @@ func (s *VTService) QueryTransaction(ctx context.Context, request_id string) (*T
 		return nil, fmt.Errorf("prodduct does not exist")
 	}
 
+
+	fmt.Println(resonse)
 	return &resonse, nil
 
 }

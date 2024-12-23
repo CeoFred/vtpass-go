@@ -109,7 +109,7 @@ type PayResponse struct {
 	ResponseDescription   string          `json:"response_description"`
 	RequestID             string          `json:"requestId"`
 	Amount                string          `json:"amount"`
-	TransactionDate       TransactionDate `json:"transaction_date"`
+	// TransactionDate       TransactionDate `json:"transaction_date"`
 	PurchasedCode         string          `json:"purchased_code"`
 	MainToken             string          `json:"mainToken"`
 	MainTokenDescription  string          `json:"mainTokenDescription"`
