@@ -59,7 +59,7 @@ func QueryTransaction() {
 	// 	fmt.Println(err)
 	// }
 
-	txn, err := service.QueryTransaction(context.Background(), "2024122310357d09ae14c5d54b13b33e5e8b5ee55fb8")
+	txn, err := service.QueryTransaction(context.Background(), "202412231005aedbc93d66654a38a86fd836f2707bc3")
 	if err != nil {
 		panic(err)
 	}

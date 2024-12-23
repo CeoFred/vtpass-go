@@ -4,10 +4,12 @@ const SandboxBaseURL = "https://sandbox.vtpass.com/api/"
 const LiveEnviromentURL = "https://vtpass.com/api/"
 
 // response codes
-const BILLER_CONFIRMED = 020
-const INVALID_ARGUMENTS = 011
-const PRODUCT_DOES_NOT_EXIST = 012
-const BILLER_NOT_REACHABLE_AT_THIS_POINT = 030
+const BILLER_CONFIRMED = "020"
+const INVALID_ARGUMENTS = "011"
+const PRODUCT_DOES_NOT_EXIST = "012"
+const BILLER_NOT_REACHABLE_AT_THIS_POINT = "030"
+const INVALID_CREDENTIALS = "087"
+
 
 const (
 	IdentifierAirtime         = "airtime"

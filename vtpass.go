@@ -25,7 +25,7 @@ type VTService struct {
 }
 
 type BaseResponse struct {
-	Code uint `json:"code"`
+	Code string `json:"code"`
 }
 
 type ErrorResponse struct {
@@ -45,7 +45,10 @@ func (e ErrorResponse) Error() string {
 		message = "PRODUCT_DOES_NOT_EXIST"
 	case BILLER_NOT_REACHABLE_AT_THIS_POINT:
 		message = "BILLER NOT REACHABLE AT THIS POINT"
+	case INVALID_CREDENTIALS:
+		message = "INVALID CREDENTIALS"
 	}
+
 	return message
 }
 
@@ -307,7 +310,7 @@ func (s *VTService) ServiceVariations(ctx context.Context, id string) ([]Variati
 		return nil, err
 	}
 
-	if resonse.Code == 011 {
+	if resonse.Code == "011" {
 		return nil, fmt.Errorf("service not valid or invalid argumments")
 	}
 
@@ -337,7 +340,7 @@ func (s *VTService) ServiceByIdentifier(ctx context.Context, id string) ([]Servi
 	if err := json.NewDecoder(resp.Body).Decode(&resonse); err != nil {
 		return nil, err
 	}
-	if resonse.Code == 010 {
+	if resonse.Code == "010" {
 		return nil, fmt.Errorf("service not valid or invalid argumments")
 	}
 
@@ -363,7 +366,7 @@ func (s *VTService) ServiceCategories(ctx context.Context) ([]ServiceCategory, e
 	if err := json.NewDecoder(resp.Body).Decode(&resonse); err != nil {
 		return nil, err
 	}
-	if resonse.Code == 011 {
+	if resonse.Code == "011" {
 		return nil, fmt.Errorf("service not valid or invalid argumments")
 	}
 
@@ -409,7 +412,7 @@ func (s *VTService) Balance(ctx context.Context) (*WalletBalance, error) {
 	if err := json.NewDecoder(resp.Body).Decode(&resonse); err != nil {
 		return nil, err
 	}
-	if resonse.Code == 011 {
+	if resonse.Code == "011" {
 		return nil, fmt.Errorf("service not valid or invalid argumments")
 	}
 	return &resonse, nil

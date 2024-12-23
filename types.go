@@ -78,10 +78,10 @@ type Transaction struct {
 	Email               string      `json:"email"`
 	Type                string      `json:"type"`
 	CreatedAt           string      `json:"created_at"`
-	Discount            *string     `json:"discount"`
-	GiftcardID          *string     `json:"giftcard_id"`
+	// Discount            *string     `json:"discount"`
+	// GiftcardID          *string     `json:"giftcard_id"`
 	TotalAmount         float64     `json:"total_amount"`
-	Commission          float64     `json:"commission"`
+	// Commission          float64     `json:"commission"`
 	Channel             string      `json:"channel"`
 	Platform            string      `json:"platform"`
 	ServiceVerification *string     `json:"service_verification"`
