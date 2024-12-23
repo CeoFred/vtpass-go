@@ -206,6 +206,7 @@ func (s *VTService) PurchaseElectricity(ctx context.Context, payload Electricity
 	if resonse.Code == "018" {
 		return nil, fmt.Errorf("balance low")
 	}
+	fmt.Println(resonse)
 
 	return &resonse, nil
 

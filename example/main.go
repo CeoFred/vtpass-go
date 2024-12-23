@@ -41,6 +41,7 @@ func main() {
 	// ServiceByIdentifier()
 	// PayElectricityPrepaid()
 	QueryTransaction()
+	// fmt.Println(service.GenerateRequestID())
 }
 
 func QueryTransaction() {
@@ -58,7 +59,7 @@ func QueryTransaction() {
 	// 	fmt.Println(err)
 	// }
 
-	txn, err := service.QueryTransaction(context.Background(), "202412231011dc5795c1b4f040f78bf2333e84f15e8b")
+	txn, err := service.QueryTransaction(context.Background(), "2024122310357d09ae14c5d54b13b33e5e8b5ee55fb8")
 	if err != nil {
 		panic(err)
 	}
@@ -100,12 +101,10 @@ func PayElectricityPrepaid() {
 		panic(err)
 	}
 
-	fmt.Println("prepaid purchase code \n", response.PurchasedCode)
-	fmt.Println(response.Content.Transactions.UnitPrice)
+	fmt.Println("prepaid purchase code \n", response.Content.Transactions)
+	fmt.Println(response.Content)
 	fmt.Println("code => ", response.Code)
 	fmt.Println("ID => ", id)
-
-
 
 }
 

@@ -94,35 +94,30 @@ type Transaction struct {
 }
 
 type Content struct {
-	Transactions Transaction `json:"transactions"`
+Transactions Transaction `json:"transactions"`
 }
 
 type TransactionDate struct {
-	Date         string `json:"date"`
+	Date        string `json:"date"`
 	TimezoneType int    `json:"timezone_type"`
-	Timezone     string `json:"timezone"`
+	Timezone    string `json:"timezone"`
 }
 
 type PayResponse struct {
-	Code                  string          `json:"code"`
-	Content               Content         `json:"content"`
-	ResponseDescription   string          `json:"response_description"`
-	RequestID             string          `json:"requestId"`
-	Amount                string          `json:"amount"`
-	// TransactionDate       TransactionDate `json:"transaction_date"`
-	PurchasedCode         string          `json:"purchased_code"`
-	MainToken             string          `json:"mainToken"`
-	MainTokenDescription  string          `json:"mainTokenDescription"`
-	MainTokenUnits        float64         `json:"mainTokenUnits"`
-	MainTokenTax          float64         `json:"mainTokenTax"`
-	MainsTokenAmount      float64         `json:"mainsTokenAmount"`
-	BonusToken            string          `json:"bonusToken"`
-	BonusTokenDescription string          `json:"bonusTokenDescription"`
-	BonusTokenUnits       int             `json:"bonusTokenUnits"`
-	BonusTokenTax         *float64        `json:"bonusTokenTax"`
-	BonusTokenAmount      *float64        `json:"bonusTokenAmount"`
-	TariffIndex           string          `json:"tariffIndex"`
-	DebtDescription       string          `json:"debtDescription"`
-	ExchangeReference     string          `json:"exchangeReference"`
-	UtilityName           string          `json:"utilityName"`
+	Code                string           `json:"code"`
+	Content             Content          `json:"content"`
+	ResponseDescription string           `json:"response_description"`
+	RequestID           string           `json:"requestId"`
+	Amount              string           `json:"amount"`
+	TransactionDate     TransactionDate  `json:"transaction_date"`
+	PurchasedCode       string           `json:"purchased_code"`
+	ExchangeReference   string           `json:"exchangeReference"`
+	ArrearsBalance      *float64         `json:"arrearsBalance"`
+	AppliedToArrears    *float64         `json:"appliedToArrears"`
+	Wallet              *float64         `json:"wallet"`
+	VAT                 string          `json:"vat"`
+	InvoiceNumber       string           `json:"invoiceNumber"`
+	AppliedToWallet     *float64         `json:"appliedToWallet"`
+	Units               string          `json:"units"`
+	Token               string           `json:"token"`
 }
