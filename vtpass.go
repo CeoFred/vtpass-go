@@ -133,7 +133,7 @@ type TransactionResponse struct {
 	Content             TransactionContent `json:"content"`
 	RequestID           string           `json:"requestId"`
 	Amount              string           `json:"amount"`
-	TransactionDate     TransactionDate  `json:"transaction_date"`
+	TransactionDate     string  `json:"transaction_date"`
 	PurchasedCode       string           `json:"purchased_code"`
 }
 
