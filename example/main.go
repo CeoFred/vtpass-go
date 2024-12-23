@@ -102,6 +102,8 @@ func PayElectricityPrepaid() {
 
 	fmt.Println("prepaid purchase code \n", response.PurchasedCode)
 	fmt.Println(response.Content.Transactions.UnitPrice)
+	fmt.Println("code => ", response.Code)
+
 
 }
 

@@ -70,8 +70,8 @@ type TransactionUpdate struct {
 	Data Data   `json:"data"`
 }
 type Transaction struct {
-	Amount              float64     `json:"amount"`
-	ConvenienceFee      float64     `json:"convenience_fee"`
+	Amount              interface{}     `json:"amount"`
+	ConvenienceFee      interface{}     `json:"convenience_fee"`
 	Status              string      `json:"status"`
 	Name                *string     `json:"name"`
 	Phone               string      `json:"phone"`
