@@ -70,17 +70,17 @@ type TransactionUpdate struct {
 	Data Data   `json:"data"`
 }
 type Transaction struct {
-	Amount              interface{}     `json:"amount"`
-	ConvenienceFee      interface{}     `json:"convenience_fee"`
-	Status              string      `json:"status"`
-	Name                *string     `json:"name"`
-	Phone               string      `json:"phone"`
-	Email               string      `json:"email"`
-	Type                string      `json:"type"`
-	CreatedAt           string      `json:"created_at"`
+	Amount         interface{} `json:"amount"`
+	ConvenienceFee interface{} `json:"convenience_fee"`
+	Status         string      `json:"status"`
+	Name           *string     `json:"name"`
+	Phone          string      `json:"phone"`
+	Email          string      `json:"email"`
+	Type           string      `json:"type"`
+	CreatedAt      string      `json:"created_at"`
 	// Discount            *string     `json:"discount"`
 	// GiftcardID          *string     `json:"giftcard_id"`
-	TotalAmount         float64     `json:"total_amount"`
+	TotalAmount float64 `json:"total_amount"`
 	// Commission          float64     `json:"commission"`
 	Channel             string      `json:"channel"`
 	Platform            string      `json:"platform"`
@@ -94,32 +94,32 @@ type Transaction struct {
 }
 
 type Content struct {
-Transactions Transaction `json:"transactions"`
+	Transactions Transaction `json:"transactions"`
 }
 
 type TransactionDate struct {
-	Date        string `json:"date"`
+	Date         string `json:"date"`
 	TimezoneType int    `json:"timezone_type"`
-	Timezone    string `json:"timezone"`
+	Timezone     string `json:"timezone"`
 }
 
 type PayResponse struct {
-	Code                string           `json:"code"`
-	Content             Content          `json:"content"`
-	ResponseDescription string           `json:"response_description"`
-	RequestID           string           `json:"requestId"`
-	Amount              string           `json:"amount"`
-	// TransactionDate     TransactionDate  `json:"transaction_date"`
-	PurchasedCode       string           `json:"purchased_code"`
-	ExchangeReference   string           `json:"exchangeReference"`
-	ArrearsBalance      *float64         `json:"arrearsBalance"`
-	AppliedToArrears    *float64         `json:"appliedToArrears"`
-	Wallet              *float64         `json:"wallet"`
-	VAT                 string          `json:"vat"`
-	InvoiceNumber       string           `json:"invoiceNumber"`
-	AppliedToWallet     *float64         `json:"appliedToWallet"`
-	Units               string          `json:"units"`
-	Token               string           `json:"token"`
+	Code                string   `json:"code"`
+	Content             Content  `json:"content"`
+	ResponseDescription string   `json:"response_description"`
+	RequestID           string   `json:"requestId"`
+	Amount              float64  `json:"amount"`
+	TransactionDate     string   `json:"transaction_date"`
+	PurchasedCode       string   `json:"purchased_code"`
+	ExchangeReference   string   `json:"exchangeReference"`
+	ArrearsBalance      *float64 `json:"arrearsBalance"`
+	AppliedToArrears    *float64 `json:"appliedToArrears"`
+	Wallet              *float64 `json:"wallet"`
+	VAT                 string   `json:"vat"`
+	InvoiceNumber       string   `json:"invoiceNumber"`
+	AppliedToWallet     *float64 `json:"appliedToWallet"`
+	Units               string   `json:"units"`
+	Token               string   `json:"token"`
 }
 
 type AirtimePurchase struct {
