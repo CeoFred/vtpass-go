@@ -449,3 +449,150 @@ func (s *VTService) Balance(ctx context.Context) (*WalletBalance, error) {
 
 // 	return &response, nil
 // }
+
+// PURCHASE AIRTIME
+// https://vtpass.com/documentation/mtn-airtime-vtu-api/
+func (s *VTService) PurchaseAirtime(ctx context.Context, payload AirtimePurchase) (*PayResponse, error) {
+	url := "pay"
+	resp, err := s.client.Post(ctx, url, payload, s.authCredentials)
+	if err != nil {
+		return nil, err
+	}
+
+	defer resp.Body.Close()
+	if resp.StatusCode != http.StatusOK {
+		var errorResponse ErrorResponse
+		if err := json.NewDecoder(resp.Body).Decode(&errorResponse); err != nil {
+			return nil, errorResponse
+		}
+		return nil, errorResponse
+	}
+
+	var response PayResponse
+	if err := json.NewDecoder(resp.Body).Decode(&response); err != nil {
+		return nil, err
+	}
+
+	if response.Code == "011" {
+		return nil, fmt.Errorf("service not valid or invalid arguments")
+	}
+	if response.Code == "012" {
+		return nil, fmt.Errorf("product does not exist")
+	}
+	if response.Code == "018" {
+		return nil, fmt.Errorf("balance low")
+	}
+
+	return &response, nil
+}
+
+// PURCHASE DATA
+// https://vtpass.com/documentation/mtn-data/
+func (s *VTService) PurchaseData(ctx context.Context, payload DataPurchase) (*PayResponse, error) {
+	url := "pay"
+	resp, err := s.client.Post(ctx, url, payload, s.authCredentials)
+	if err != nil {
+		return nil, err
+	}
+
+	defer resp.Body.Close()
+	if resp.StatusCode != http.StatusOK {
+		var errorResponse ErrorResponse
+		if err := json.NewDecoder(resp.Body).Decode(&errorResponse); err != nil {
+			return nil, errorResponse
+		}
+		return nil, errorResponse
+	}
+
+	var response PayResponse
+	if err := json.NewDecoder(resp.Body).Decode(&response); err != nil {
+		return nil, err
+	}
+
+	if response.Code == "011" {
+		return nil, fmt.Errorf("service not valid or invalid arguments")
+	}
+	if response.Code == "012" {
+		return nil, fmt.Errorf("product does not exist")
+	}
+	if response.Code == "018" {
+		return nil, fmt.Errorf("balance low")
+	}
+
+	return &response, nil
+}
+
+// VERIFY SMARTCARD NUMBER
+// https://vtpass.com/documentation/dstv-subscription-api/
+func (s *VTService) VerifySmartCard(ctx context.Context, smartcard_number, service_id string) (*TVCustomerInfo, error) {
+	url := "merchant-verify"
+
+	requestData := map[string]interface{}{
+		"billersCode": smartcard_number,
+		"serviceID":   service_id,
+	}
+
+	resp, err := s.client.Post(ctx, url, requestData, s.authCredentials)
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Body.Close()
+
+	if resp.StatusCode != http.StatusOK {
+		var errorResponse ErrorResponse
+		if err := json.NewDecoder(resp.Body).Decode(&errorResponse); err != nil {
+			return nil, errorResponse
+		}
+		return nil, errorResponse
+	}
+
+	var response TVCustomerInfoResponse
+	if err := json.NewDecoder(resp.Body).Decode(&response); err != nil {
+		return nil, err
+	}
+
+	if response.Code == "011" {
+		return nil, fmt.Errorf("service not valid or invalid arguments")
+	}
+	if response.Code == "012" {
+		return nil, fmt.Errorf("product does not exist")
+	}
+
+	return &response.Content, nil
+}
+
+// PURCHASE TV SUBSCRIPTION (Bouquet Change or Renewal)
+// https://vtpass.com/documentation/dstv-subscription-api/
+func (s *VTService) PurchaseTV(ctx context.Context, payload TVPurchase) (*PayResponse, error) {
+	url := "pay"
+	resp, err := s.client.Post(ctx, url, payload, s.authCredentials)
+	if err != nil {
+		return nil, err
+	}
+
+	defer resp.Body.Close()
+	if resp.StatusCode != http.StatusOK {
+		var errorResponse ErrorResponse
+		if err := json.NewDecoder(resp.Body).Decode(&errorResponse); err != nil {
+			return nil, errorResponse
+		}
+		return nil, errorResponse
+	}
+
+	var response PayResponse
+	if err := json.NewDecoder(resp.Body).Decode(&response); err != nil {
+		return nil, err
+	}
+
+	if response.Code == "011" {
+		return nil, fmt.Errorf("service not valid or invalid arguments")
+	}
+	if response.Code == "012" {
+		return nil, fmt.Errorf("product does not exist")
+	}
+	if response.Code == "018" {
+		return nil, fmt.Errorf("balance low")
+	}
+
+	return &response, nil
+}

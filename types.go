@@ -121,3 +121,44 @@ type PayResponse struct {
 	Units               string          `json:"units"`
 	Token               string           `json:"token"`
 }
+
+type AirtimePurchase struct {
+	RequestID string  `json:"request_id"`
+	ServiceID string  `json:"serviceID"`
+	Amount    float64 `json:"amount"`
+	Phone     string  `json:"phone"`
+}
+
+type DataPurchase struct {
+	RequestID     string  `json:"request_id"`
+	ServiceID     string  `json:"serviceID"`
+	BillersCode   string  `json:"billersCode"`
+	VariationCode string  `json:"variation_code"`
+	Amount        float64 `json:"amount,omitempty"`
+	Phone         string  `json:"phone"`
+}
+
+type TVCustomerInfo struct {
+	CustomerName   string      `json:"Customer_Name"`
+	Status         string      `json:"Status"`
+	DueDate        string      `json:"Due_Date"`
+	CustomerNumber string      `json:"Customer_Number"`
+	CustomerType   string      `json:"Customer_Type"`
+	RenewalAmount  interface{} `json:"Renewal_Amount"`
+}
+
+type TVCustomerInfoResponse struct {
+	Code    string         `json:"code"`
+	Content TVCustomerInfo `json:"content"`
+}
+
+type TVPurchase struct {
+	RequestID        string  `json:"request_id"`
+	ServiceID        string  `json:"serviceID"`
+	BillersCode      string  `json:"billersCode"`
+	VariationCode    string  `json:"variation_code,omitempty"`
+	Amount           float64 `json:"amount,omitempty"`
+	Phone            string  `json:"phone"`
+	SubscriptionType string  `json:"subscription_type"` // "change" or "renew"
+	Quantity         int     `json:"quantity,omitempty"`
+}

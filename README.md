@@ -2,7 +2,7 @@
 
 ## Overview
 
-The VTPass Go library provides an interface to interact with the VTPass API for various services such as querying transaction status, purchasing products (electricity), verifying meter numbers, and fetching service variations and categories.
+The VTPass Go library provides an interface to interact with the VTPass API for various services such as querying transaction status, purchasing products (electricity, airtime, data, and TV subscriptions), verifying meter and smartcard numbers, and fetching service variations and categories.
 
 ## Installation
 
@@ -178,6 +178,83 @@ if err != nil {
 fmt.Println("Name:", customer.CustomerName)
 fmt.Println("Business Unit:", customer.BusinessUnit)
 fmt.Println("Account Number:", customer.AccountNumber)
+```
+
+### `PurchaseAirtime(ctx context.Context, payload AirtimePurchase) (*PayResponse, error)`
+Purchases airtime VTU by providing the necessary details.
+
+**Example Usage:**
+
+```go
+id := service.GenerateRequestID()
+response, err := service.PurchaseAirtime(context.Background(), vt.AirtimePurchase{
+    RequestID: id,
+    ServiceID: "mtn",
+    Amount:    100,
+    Phone:     "08011111111",
+})
+if err != nil {
+    fmt.Println(err)
+}
+fmt.Println("airtime purchase status:", response.Content.Transactions.Status)
+```
+
+### `PurchaseData(ctx context.Context, payload DataPurchase) (*PayResponse, error)`
+Purchases a mobile data bundle by providing the necessary details.
+
+**Example Usage:**
+
+```go
+id := service.GenerateRequestID()
+response, err := service.PurchaseData(context.Background(), vt.DataPurchase{
+    RequestID:     id,
+    ServiceID:     "mtn-data",
+    BillersCode:   "08011111111",
+    VariationCode: "mtn-10mb-100",
+    Amount:        100,
+    Phone:         "08011111111",
+})
+if err != nil {
+    fmt.Println(err)
+}
+fmt.Println("data purchase status:", response.Content.Transactions.Status)
+```
+
+### `VerifySmartCard(ctx context.Context, smartcard_number, service_id string) (*TVCustomerInfo, error)`
+Verifies a cable TV subscription smartcard/decoder number.
+
+**Example Usage:**
+
+```go
+customer, err := service.VerifySmartCard(context.Background(), "1212121212", "dstv")
+if err != nil {
+    fmt.Println(err)
+}
+fmt.Println("Name:", customer.CustomerName)
+fmt.Println("Status:", customer.Status)
+fmt.Println("Renewal Amount:", customer.RenewalAmount)
+```
+
+### `PurchaseTV(ctx context.Context, payload TVPurchase) (*PayResponse, error)`
+Purchases or renews a TV subscription bundle.
+
+**Example Usage:**
+
+```go
+id := service.GenerateRequestID()
+response, err := service.PurchaseTV(context.Background(), vt.TVPurchase{
+    RequestID:        id,
+    ServiceID:        "dstv",
+    BillersCode:      "1212121212",
+    VariationCode:    "dstv-padi",
+    Amount:           2000,
+    Phone:            "08011111111",
+    SubscriptionType: "change",
+})
+if err != nil {
+    fmt.Println(err)
+}
+fmt.Println("tv purchase status:", response.Content.Transactions.Status)
 ```
 
 ### `ServiceVariations(ctx context.Context, id string) ([]Variation, error)`

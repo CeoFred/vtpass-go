@@ -170,3 +170,72 @@ func ServiceByIdentifier() {
 		fmt.Printf("Service: %s, Min Amount: %s \n", services[i].Name, services[i].MinimumAmount)
 	}
 }
+
+func PurchaseAirtimeExample() {
+	id := service.GenerateRequestID()
+
+	response, err := service.PurchaseAirtime(context.Background(), vt.AirtimePurchase{
+		RequestID: id,
+		ServiceID: "mtn",
+		Amount:    100,
+		Phone:     "08011111111", // Sandbox success number
+	})
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+
+	fmt.Println("airtime purchase response code =>", response.Code)
+	fmt.Println("transaction status =>", response.Content.Transactions.Status)
+}
+
+func PurchaseDataExample() {
+	id := service.GenerateRequestID()
+
+	response, err := service.PurchaseData(context.Background(), vt.DataPurchase{
+		RequestID:     id,
+		ServiceID:     "mtn-data",
+		BillersCode:   "08011111111", // Sandbox success number
+		VariationCode: "mtn-10mb-100",
+		Amount:        100,
+		Phone:         "08011111111",
+	})
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+
+	fmt.Println("data purchase response code =>", response.Code)
+	fmt.Println("transaction status =>", response.Content.Transactions.Status)
+}
+
+func TVSubscriptionExample() {
+	// 1. Verify Smartcard Number
+	customer, err := service.VerifySmartCard(context.Background(), "1212121212", "dstv") // Sandbox success smartcard
+	if err != nil {
+		fmt.Println("failed to verify smartcard:", err)
+		return
+	}
+
+	fmt.Printf("smartcard verified. Customer: %s, Status: %s, Renewal Amount: %v\n", 
+		customer.CustomerName, customer.Status, customer.RenewalAmount)
+
+	// 2. Perform TV subscription purchase (Bouquet Change)
+	id := service.GenerateRequestID()
+	response, err := service.PurchaseTV(context.Background(), vt.TVPurchase{
+		RequestID:        id,
+		ServiceID:        "dstv",
+		BillersCode:      "1212121212",
+		VariationCode:    "dstv-padi",
+		Amount:           2000,
+		Phone:            "08011111111",
+		SubscriptionType: "change",
+	})
+	if err != nil {
+		fmt.Println("tv purchase failed:", err)
+		return
+	}
+
+	fmt.Println("tv purchase response code =>", response.Code)
+	fmt.Println("transaction status =>", response.Content.Transactions.Status)
+}
