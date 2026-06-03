@@ -115,7 +115,7 @@ type PayResponse struct {
 	ArrearsBalance      *float64 `json:"arrearsBalance"`
 	AppliedToArrears    *float64 `json:"appliedToArrears"`
 	Wallet              *float64 `json:"wallet"`
-	VAT                 float64   `json:"vat"`
+	VAT                 *float64   `json:"vat"`
 	InvoiceNumber       string   `json:"invoiceNumber"`
 	AppliedToWallet     *float64 `json:"appliedToWallet"`
 	Units               string   `json:"units"`
