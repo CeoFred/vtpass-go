@@ -244,3 +244,14 @@ func TestPurchaseTV(t *testing.T) {
 	assert.NotNil(t, resp)
 	assert.Equal(t, "000", resp.Code)
 }
+
+func TestCustomerInfoUnmarshalNumericFields(t *testing.T) {
+	var c CustomerInfo
+	err := json.Unmarshal([]byte(`{"Customer_Name":"A","Customer_Arrears":0,"Last_Purchase_Days":"12","KCT1":null,"Customer_Number":123}`), &c)
+	if err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
+	if c.CustomerArrears != "0" || c.LastPurchaseDays != "12" || c.CustomerNumber != "123" || c.KCT1 != "" || c.CustomerName != "A" {
+		t.Fatalf("unexpected result: %+v", c)
+	}
+}

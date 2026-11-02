@@ -1,5 +1,10 @@
 package vtupass_go
 
+import (
+	"bytes"
+	"encoding/json"
+)
+
 type Environment string
 
 const (
@@ -44,6 +49,63 @@ type CustomerInfo struct {
 	// MAXPurchaseAmount string `json:"Max_Purchase_Amount"`
 	// MinPurchaseAmount string `json:"Min_Purchase_Amount"`
 	CustomerPhone string `json:"Customer_Phone"`
+}
+
+// flexString decodes a JSON string, number, bool or null into a string, since
+// VTpass returns some CustomerInfo fields as numbers for certain discos.
+type flexString string
+
+func (f *flexString) UnmarshalJSON(b []byte) error {
+	b = bytes.TrimSpace(b)
+	if bytes.Equal(b, []byte("null")) {
+		return nil
+	}
+	if len(b) > 0 && b[0] == '"' {
+		var s string
+		if err := json.Unmarshal(b, &s); err != nil {
+			return err
+		}
+		*f = flexString(s)
+		return nil
+	}
+	*f = flexString(b)
+	return nil
+}
+
+// UnmarshalJSON tolerates numeric values in fields declared as strings.
+func (c *CustomerInfo) UnmarshalJSON(data []byte) error {
+	var aux struct {
+		CustomerName     flexString `json:"Customer_Name"`
+		CustomerNumber   flexString `json:"Customer_Number"`
+		AccountNumber    flexString `json:"Account_Number"`
+		MeterNumber      flexString `json:"MeterNumber"`
+		BusinessUnit     flexString `json:"Business_Unit"`
+		Address          flexString `json:"Address"`
+		CustomerArrears  flexString `json:"Customer_Arrears"`
+		District         flexString `json:"District"`
+		LastPurchaseDays flexString `json:"Last_Purchase_Days"`
+		KCT1             flexString `json:"KCT1"`
+		KCT2             flexString `json:"KCT2"`
+		CustomerPhone    flexString `json:"Customer_Phone"`
+	}
+	if err := json.Unmarshal(data, &aux); err != nil {
+		return err
+	}
+	*c = CustomerInfo{
+		CustomerName:     string(aux.CustomerName),
+		CustomerNumber:   string(aux.CustomerNumber),
+		AccountNumber:    string(aux.AccountNumber),
+		MeterNumber:      string(aux.MeterNumber),
+		BusinessUnit:     string(aux.BusinessUnit),
+		Address:          string(aux.Address),
+		CustomerArrears:  string(aux.CustomerArrears),
+		District:         string(aux.District),
+		LastPurchaseDays: string(aux.LastPurchaseDays),
+		KCT1:             string(aux.KCT1),
+		KCT2:             string(aux.KCT2),
+		CustomerPhone:    string(aux.CustomerPhone),
+	}
+	return nil
 }
 
 type ElectricityPurchase struct {
